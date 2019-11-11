@@ -13,10 +13,10 @@
   Alguns exemplos abaixo:
 </h2> 
 
-### Repositório Rocketseat
+### Repositório Rocketseat/unform
 ![14fccb56-d01f-42fc-93d1-a61d5c2433f9](https://user-images.githubusercontent.com/56616755/68617386-f97c2880-04a5-11ea-8c3c-a89dabcdc953.jpg)
 
-### Repositório Facebook
+### Repositório Facebook/react
 ![d47c4b2d-94e6-4a5b-acaa-38bb2b749f51](https://user-images.githubusercontent.com/56616755/68617391-fb45ec00-04a5-11ea-81e0-aa65e79edb8b.jpg)
 
 
