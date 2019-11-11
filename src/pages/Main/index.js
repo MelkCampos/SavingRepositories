@@ -2,7 +2,11 @@ import React, { Component } from 'react';
 import { FaGithubAlt, FaPlus, FaSpinner } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
-import { Container, Form, SubmitButton, List } from './styles';
+// css geral á aplicação
+import Container from '../../Components/Container';
+
+// css especifico da página
+import { Form, SubmitButton, List } from './styles';
 
 import api from '../../services/api';
 
@@ -76,7 +80,7 @@ export default class Main extends Component {
       <Container>
         <h1>
           <FaGithubAlt />
-          Repository
+          Grape Repository
         </h1>
 
         <Form onSubmit={this.handleSubmit} >
