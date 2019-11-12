@@ -44,7 +44,11 @@ export const Owner = styled.header`
     text-decoration: none;
     background: #7159c1;
     font-weight: bold;
-    border-radius: 4px;
+    border-radius: 3px;
+  }
+
+  a:hover {
+    background: #7168c0;
   }
 
 `;
@@ -54,16 +58,18 @@ export const IssueList = styled.ul`
   margin-top: 30px;
   border-top: 1px solid #eee;
   list-style: none;
+  
 
   /* bloco dos usuários */
   li {
     display: flex;
     padding: 15px 10px;
     border: 1px solid #eee;
-    border-radius: 8px;
+    border-radius: 3px;
     
     & + li {
       margin-top: 10px;
+
   }
 
   img {
@@ -86,8 +92,9 @@ export const IssueList = styled.ul`
       color: #333;
 
       &:hover {
-        color:#7159c1;
+        color: #7168c0;
       }
+
     }
 
     span {
@@ -109,4 +116,69 @@ export const IssueList = styled.ul`
       }
 
     }
+    
 `; 
+
+export const IssuesFilter = styled.div`
+  display: flex;
+  justify-content: center;
+  padding-bottom: 15px;
+  align-items: center;
+  font-size: 12px;
+  
+    button {
+      transition: opacity 0.25s ease-out;
+      border-radius: 3px;
+      outline: 0;
+      border: 0;
+      margin: 3px;
+      width: 80px;
+      padding: 8px;
+      color: #fff;
+      background:  #7159c1;
+
+      &:hover {
+        background: #7168c0;
+      }
+
+      &:disabled {
+        opacity: 0.35;
+        cursor: not-allowed;
+      }
+    }
+
+`;
+
+export const PageActions = styled.div`
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+
+  
+  span {
+      color:#808e9b;
+    }
+
+  button {
+    transition: opacity 0.25s ease-out;
+    border-radius: 3px;
+    outline: 0;
+    border: 0;
+    width: 80px;
+    padding: 8px;
+    background: #7159c1;
+    color: #fff;
+
+
+    &:hover {
+        background: #7168c0;
+      }
+
+    &:disabled {
+        opacity: 0.35;
+        cursor: not-allowed;
+      }
+  }
+`;

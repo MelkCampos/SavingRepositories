@@ -10,8 +10,8 @@ import { Loading, Owner, IssueList, IssuesFilter, PageActions } from './styles';
 export default class Repository extends Component {
 
     static propTypes = {
-      match: PropTypes.shape({
-        params: PropTypes.shape({
+          match: PropTypes.shape({
+          params: PropTypes.shape({
           repository: PropTypes.string,
         }),
       }).isRequired, // tudo será obrigatorio 
@@ -25,7 +25,7 @@ export default class Repository extends Component {
         filters: [
           { state: 'all', label: 'All', active: true},
           { state: 'open', label: 'Open', active: false},
-          { state: 'close', label: 'Closed', active: false},
+          { state: 'closed', label: 'Closed', active: false},
         ],
         filterIndex: 0,
         page: 1,
@@ -44,8 +44,8 @@ export default class Repository extends Component {
       api.get(`/repos/${repositoryName}`),
       api.get(`/repos/${repositoryName}/issues`, {
         params: {
-          state: 'open',
-          per_page: 5,
+          state: filters.find(filter => filter.active).state,
+          per_page: 5, // blocos de issues a serem mostradas por página
         },
       }),
     ]);
@@ -57,8 +57,40 @@ export default class Repository extends Component {
       });
    }
 
+   loadIssues = async () => {
+     const { match } = this.props;
+     const { filters, filterIndex, page } = this.state;
+
+     const repositoryName = decodeURIComponent(match.params.repository); 
+
+     const response = await api.get(`/repos/${repositoryName}/issues`, {
+       params: {
+         state: filters[filterIndex].state,
+         per_page: 5,
+         page,
+       },
+     });
+
+     this.setState({ issues: response.data });
+   };
+
+   handleFilterClick = async filterIndex => {
+     await this.setState({ filterIndex });
+     this.loadIssues();
+   };
+
+   // rolagem de páginas
+   handlePage = async action => {
+     const { page } = this.state;
+     await this.setState({
+       page: action === 'previous' ? page - 1 : page + 1,
+     });
+
+     this.loadIssues();
+   };
+
     render() {
-      const { repository, issues, loading } = this.state;
+      const { repository, issues, loading, filters, filterIndex, page } = this.state;
 
       if(loading) {
         return <Loading>Loading</Loading>
@@ -84,7 +116,13 @@ export default class Repository extends Component {
                 
                 <IssueList>
                   <IssuesFilter active={filterIndex} >
-                      {}
+                      {filters.map((filter, index) => (
+                        <button  type="button" key={filter.label} 
+                                onClick={() => this.handleFilterClick(index)} >
+                          {filter.label}
+                        </button>
+                      ))}
+
                   </IssuesFilter>
                     {issues.map(issue => (
                       <li key={String(issue.id)}>
@@ -103,7 +141,20 @@ export default class Repository extends Component {
                       </li>
                     ))}
                 </IssueList>
-
+                
+                  <PageActions>              
+                    <button
+                      type="button"
+                      disabled={page < 2}
+                      onClick={() => this.handlePage('previous')} >  
+                              Previous
+                    </button>
+                    
+                        <span>Page {page}</span>
+                        <button type="button" onClick={() => this.handlePage('next')}>
+                          Next
+                        </button>                       
+                  </PageActions>
              </Container>
       );
     }
