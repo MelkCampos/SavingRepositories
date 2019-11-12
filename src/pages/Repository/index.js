@@ -5,7 +5,7 @@ import api from '../../services/api';
 
 import Container from '../../Components/Container';
 
-import { Loading, Owner, IssueList } from './styles';
+import { Loading, Owner, IssueList, IssuesFilter, PageActions } from './styles';
 
 export default class Repository extends Component {
 
@@ -22,10 +22,18 @@ export default class Repository extends Component {
         repository: {},
         issues: [],
         loading: true,
+        filters: [
+          { state: 'all', label: 'All', active: true},
+          { state: 'open', label: 'Open', active: false},
+          { state: 'close', label: 'Closed', active: false},
+        ],
+        filterIndex: 0,
+        page: 1,
     };
     
    async componentDidMount() {
     const { match } = this.props;
+    const { filters } = this.state;
 
     // decodeURIComponent: configura a barra [ / ] ao requerir o nome do repositório
     const repositoryName = decodeURIComponent(match.params.repository);
@@ -75,6 +83,9 @@ export default class Repository extends Component {
 
                 
                 <IssueList>
+                  <IssuesFilter active={filterIndex} >
+                      {}
+                  </IssuesFilter>
                     {issues.map(issue => (
                       <li key={String(issue.id)}>
                           <img src={issue.user.avatar_url} alt={issue.user.login} />

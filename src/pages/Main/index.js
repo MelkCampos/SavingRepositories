@@ -16,6 +16,7 @@ export default class Main extends Component {
     newRepository: '',
     repositories: [],
     loading: false,
+    error: null,
   };
 
   // Carregar os dados do localStorage
@@ -44,18 +45,30 @@ export default class Main extends Component {
 
   // armazenando o valor do "input" dentro da váriavel "newRepository". 
   handleInputChange = event => {
-    this.setState({ newRepository: event.target.value });
+    this.setState({ newRepository: event.target.value, error: null });
   }
 
+ 
+    
   // submit
   handleSubmit = async event => {
     // anular o procedimento padrão do "form"
     event.preventDefault();
 
     // status de loading
-    this.setState({ loading: true });
+    this.setState({ loading: true, error: false });
 
+try { 
     const { newRepository, repositories } = this.state;
+
+    // validação de input vazio
+    if (newRepository === '') throw 'You need to enter a repository name';
+
+    // validação de repositório duplicado
+    const hasRepository = repositories.find( repository => 
+        repository.name === newRepository);
+
+    if (hasRepository) throw 'Duplicate repository';
 
     const response = await api.get(`/repos/${newRepository}`);
 
@@ -66,10 +79,15 @@ export default class Main extends Component {
     this.setState({ 
       repositories: [...repositories, data],
       newRepository: '',
-     loading: false,
      });
+     
+    } catch (error) {
+        this.setState({ error: true });
+    } finally {
+      this.setState({ loading: false });
+    }
   };
-
+ 
 
   // Renderização
 
